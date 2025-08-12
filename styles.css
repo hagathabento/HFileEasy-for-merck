@@ -39,6 +39,57 @@ body {
     margin-bottom: 30px; /* Espaçamento inferior */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); /* Sombra suave */
     backdrop-filter: blur(10px); /* Efeito de vidro fosco */
+    position: relative; /* Para posicionamento do seletor de idioma */
+}
+
+/* ===== SELETOR DE IDIOMA ===== */
+.language-selector {
+    position: absolute; /* Posição absoluta dentro do header */
+    top: 15px; /* Distância do topo */
+    right: 20px; /* Distância da direita */
+    z-index: 10; /* Fica acima de outros elementos */
+}
+
+.language-selector select {
+    background: rgba(255, 255, 255, 0.9); /* Fundo branco semi-transparente */
+    border: 2px solid rgba(102, 126, 234, 0.3); /* Borda sutil */
+    border-radius: 12px; /* Bordas arredondadas */
+    padding: 8px 12px; /* Espaçamento interno */
+    font-family: 'Poppins', sans-serif; /* Fonte consistente */
+    font-size: 14px; /* Tamanho da fonte */
+    font-weight: 500; /* Peso da fonte */
+    color: #333; /* Cor do texto */
+    cursor: pointer; /* Cursor de pointer */
+    transition: all 0.3s ease; /* Transição suave */
+    outline: none; /* Remove contorno padrão */
+    min-width: 140px; /* Largura mínima */
+}
+
+.language-selector select:hover {
+    border-color: rgba(102, 126, 234, 0.6); /* Borda mais forte no hover */
+    background: rgba(255, 255, 255, 1); /* Fundo mais opaco no hover */
+    transform: translateY(-1px); /* Leve elevação no hover */
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2); /* Sombra no hover */
+}
+
+.language-selector select:focus {
+    border-color: #667eea; /* Borda colorida no focus */
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Anel de foco */
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .language-selector {
+        position: static; /* Posição estática em mobile */
+        margin-bottom: 15px; /* Margem inferior */
+        display: flex; /* Layout flexível */
+        justify-content: center; /* Centraliza horizontalmente */
+    }
+    
+    .language-selector select {
+        min-width: 120px; /* Largura menor em mobile */
+        font-size: 13px; /* Fonte menor em mobile */
+    }
 }
 
 /* Container do logo e título */

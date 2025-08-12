@@ -17,6 +17,7 @@ let processandoPDF = false; // Flag para evitar múltiplas execuções simultân
 document.addEventListener('DOMContentLoaded', function() {
     inicializarEventListeners(); // Configura todos os event listeners
     inicializarSliders(); // Função de compatibilidade
+    inicializarSistemaIdiomas(); // Inicializa sistema de idiomas
 });
 
 // ===== CONFIGURAÇÃO DOS EVENT LISTENERS =====
@@ -39,6 +40,42 @@ function inicializarSliders() {
     console.log('Interface simplificada - sliders removidos');
 }
 
+// ===== INICIALIZAÇÃO DO SISTEMA DE IDIOMAS =====
+function inicializarSistemaIdiomas() {
+    // Carregar idioma salvo
+    const savedLang = localStorage.getItem('hfileeasy_language');
+    if (savedLang && window.TRANSLATIONS && window.TRANSLATIONS[savedLang]) {
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) {
+            languageSelect.value = savedLang;
+            if (window.changeLanguage) {
+                window.changeLanguage(savedLang);
+            }
+        }
+    }
+    console.log('Sistema de idiomas inicializado');
+}
+
+// ===== ATUALIZAÇÃO DA INTERFACE APÓS MUDANÇA DE IDIOMA =====
+function atualizarInterface() {
+    // Validar imagens antes de atualizar interface
+    validarImagensCarregadas();
+    
+    if (imagensCarregadas.length > 0) {
+        document.getElementById('settingsSection').style.display = 'block';
+        document.getElementById('previewSection').style.display = 'block';
+        document.getElementById('uploadArea').classList.add('has-images');
+        atualizarPreview();
+    } else {
+        document.getElementById('uploadArea').classList.remove('has-images');
+    }
+    
+    // Atualizar textos se o sistema de tradução estiver disponível
+    if (window.updateInterfaceTexts) {
+        window.updateInterfaceTexts();
+    }
+}
+
 // ===== VALIDAÇÃO DE ARQUIVOS =====
 // Verifica se o arquivo atende aos critérios de formato e tamanho
 function validarArquivo(file) {
@@ -50,13 +87,15 @@ function validarArquivo(file) {
     
     // Verifica se o tipo de arquivo é permitido
     if (!tiposPermitidos.includes(file.type)) {
-        alert(`Tipo de arquivo não permitido: ${file.type}. Use PNG, JPEG, GIF ou WebP.`);
+        const message = window.t ? window.t('fileTypeError', {type: file.type}) : `Tipo de arquivo não permitido: ${file.type}. Use PNG, JPEG, GIF ou WebP.`;
+        alert(message);
         return false;
     }
     
     // Verifica se o arquivo não excede o tamanho máximo
     if (file.size > tamanhoMaximo) {
-        alert(`Arquivo muito grande: ${formatarTamanho(file.size)}. Máximo permitido: 50MB.`);
+        const message = window.t ? window.t('fileSizeError', {size: formatarTamanho(file.size)}) : `Arquivo muito grande: ${formatarTamanho(file.size)}. Máximo permitido: 50MB.`;
+        alert(message);
         return false;
     }
     
@@ -394,7 +433,8 @@ function gerarPDF() {
     validarImagensCarregadas();
     
     if (imagensCarregadas.length === 0) {
-        alert('⚠️ Adicione pelo menos uma imagem para gerar o PDF.');
+        const message = window.t ? window.t('noImagesError') : '⚠️ Adicione pelo menos uma imagem para gerar o PDF.';
+        alert(message);
         return;
     }
     
@@ -432,18 +472,40 @@ function confirmarConfiguracoes(config) {
     const dataHora = new Date().toISOString().split('T')[0];
     const nomeArquivo = `${config.nomeArquivo}_${dataHora}.pdf`;
     
+    // Usar traduções se disponíveis
+    const t = window.t || ((key, params = {}) => {
+        // Fallback para português se sistema de tradução não estiver disponível
+        const fallbacks = {
+            configTitle: '📋 CONFIGURAÇÕES DO PDF:',
+            configTitleField: '📄 Título:',
+            configAuthorField: '👤 Elaborado por:',
+            configFilenameField: '📁 Nome do arquivo:',
+            configImagesField: '🖼️ Imagens:',
+            configImagesCount: '{count} imagem(ns)',
+            configImagesPerPage: '📑 Imagens por página: {count}',
+            configNumberPages: '✅ Numerar páginas',
+            configNoNumberPages: '❌ Numerar páginas',
+            configContinue: 'Deseja continuar?'
+        };
+        let result = fallbacks[key] || key;
+        Object.keys(params).forEach(param => {
+            result = result.replace(`{${param}}`, params[param]);
+        });
+        return result;
+    });
+    
     const mensagem = `
-📋 CONFIGURAÇÕES DO PDF:
+${t('configTitle')}
 
-📄 Título: "${config.titulo}"
-👤 Elaborado por: "${config.autor}"
-📁 Nome do arquivo: "${nomeArquivo}"
+${t('configTitleField')} "${config.titulo}"
+${t('configAuthorField')} "${config.autor}"
+${t('configFilenameField')} "${nomeArquivo}"
 
-🖼️ Imagens: ${imagensCarregadas.length} imagem(ns)
-📑 Imagens por página: ${config.imagensPorPagina}
-${config.numerarPaginas ? '✅' : '❌'} Numerar páginas
+${t('configImagesField')} ${t('configImagesCount', {count: imagensCarregadas.length})}
+${t('configImagesPerPage', {count: config.imagensPorPagina})}
+${config.numerarPaginas ? t('configNumberPages') : t('configNoNumberPages')}
 
-Deseja continuar?`;
+${t('configContinue')}`;
     
     return confirm(mensagem);
 }
@@ -518,7 +580,8 @@ function compilarPDF(imagens, configuracoes) {
         for (let i = 0; i < imagens.length; i++) {
             const imagem = imagens[i];
             
-            atualizarProgresso((i / imagens.length) * 100, `Processando imagem ${i + 1} de ${imagens.length}`);
+            const progressText = window.t ? window.t('processingImage', {current: i + 1, total: imagens.length}) : `Processando imagem ${i + 1} de ${imagens.length}`;
+            atualizarProgresso((i / imagens.length) * 100, progressText);
             
             // Validar se a imagem tem todas as propriedades necessárias
             if (!imagem || !imagem.dataUrl || !imagem.largura || !imagem.altura) {
@@ -642,7 +705,8 @@ function compilarPDF(imagens, configuracoes) {
         // =============================================
         // 4. FINALIZAR E SALVAR COM NOME PERSONALIZADO
         // =============================================
-        atualizarProgresso(100, 'Finalizando PDF...');
+        const finalizingText = window.t ? window.t('progressFinalizing') : 'Finalizando PDF...';
+        atualizarProgresso(100, finalizingText);
         
         setTimeout(() => {
             // Gerar nome do arquivo baseado na configuração do usuário
@@ -918,11 +982,13 @@ document.addEventListener('drop', function(e) {
 function testarDependencias() {
     if (typeof window.jspdf === 'undefined') {
         console.error('jsPDF não foi carregado corretamente');
-        alert('Erro: Biblioteca jsPDF não carregada. Verifique sua conexão com a internet.');
+        const message = window.t ? window.t('jsPDFError') : 'Erro: Biblioteca jsPDF não carregada. Verifique sua conexão com a internet.';
+        alert(message);
         return false;
     }
     
-    debug('Todas as dependências carregadas com sucesso');
+    const message = window.t ? window.t('dependenciesLoaded') : 'Todas as dependências carregadas com sucesso';
+    debug(message);
     return true;
 }
 

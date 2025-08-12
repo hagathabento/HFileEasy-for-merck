@@ -26,6 +26,10 @@
     <!-- ===== BIBLIOTECA JSPDF ===== -->
     <!-- Biblioteca JavaScript para gerar PDFs no navegador -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- ===== SISTEMA DE TRADUÇÕES ===== -->
+    <!-- Sistema de internacionalização para múltiplos idiomas -->
+    <script src="translations.js"></script>
 </head>
 <body>
     <!-- ===== CONTAINER PRINCIPAL ===== -->
@@ -33,13 +37,22 @@
         
         <!-- ===== CABEÇALHO ===== -->
         <header class="header">
+            <!-- Seletor de Idioma -->
+            <div class="language-selector">
+                <select id="languageSelect" onchange="changeLanguage(this.value)" aria-label="Selecionar Idioma">
+                    <option value="pt">🇧🇷 Português</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                </select>
+            </div>
+            
             <!-- Logo e título da aplicação -->
             <div class="logo">
                 <img src="merck.jpeg" alt="Logo" class="logo-image"> <!-- Logo da empresa Merck -->
-                <h1>HFileEasy</h1> <!-- Nome da aplicação -->
+                <h1 data-translate="title">HFileEasy</h1> <!-- Nome da aplicação -->
             </div>
             <!-- Subtítulo descritivo -->
-            <p class="subtitle">Transforme suas imagens em PDF com Facilidade</p>
+            <p class="subtitle" data-translate="subtitle">Transforme suas imagens em PDF com Facilidade</p>
         </header>
 
         <!-- ===== CONTEÚDO PRINCIPAL ===== -->
@@ -50,14 +63,14 @@
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-content">
                         <div class="upload-icon">📷</div> <!-- Ícone decorativo de câmera -->
-                        <h3>Arraste suas imagens aqui</h3> <!-- Título da ação -->
-                        <p>ou clique para selecionar arquivos</p> <!-- Instrução alternativa -->
+                        <h3 data-translate="uploadTitle">Arraste suas imagens aqui</h3> <!-- Título da ação -->
+                        <p data-translate="uploadSubtitle">ou clique para selecionar arquivos</p> <!-- Instrução alternativa -->
                         
                         <!-- Input de arquivo oculto (ativado pelo botão) -->
                         <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
                         
                         <!-- Botão para abrir seletor de arquivos -->
-                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()" data-translate="uploadButton">
                             Escolher Imagens
                         </button>
                     </div>
@@ -67,12 +80,12 @@
             <!-- ===== SEÇÃO DE PREVIEW DAS IMAGENS ===== -->
             <!-- Esta seção só aparece após o usuário carregar imagens -->
             <section class="preview-section" id="previewSection" style="display: none;">
-                <h3>🖼️ Visualização das Imagens</h3>
+                <h3 data-translate="previewTitle">🖼️ Visualização das Imagens</h3>
                 
                 <!-- Instruções de uso para desktop e mobile -->
                 <div class="preview-instructions">
-                    📋 <span class="desktop-instruction">Arraste as imagens para reordenar como aparecerão no PDF</span>
-                    <span class="mobile-instruction">Use os botões: ↑ subir | ↓ descer | ⌘ escolher posição</span>
+                    📋 <span class="desktop-instruction" data-translate="previewInstructionsDesktop">Arraste as imagens para reordenar como aparecerão no PDF</span>
+                    <span class="mobile-instruction" data-translate="previewInstructionsMobile">Use os botões: ↑ subir | ↓ descer | ⌘ escolher posição</span>
                 </div>
                 
                 <!-- Container onde as imagens são exibidas dinamicamente -->
@@ -82,65 +95,65 @@
                 
                 <!-- Botões de ação para gerenciar as imagens -->
                 <div class="preview-actions">
-                    <button class="btn-secondary" onclick="limparTudo()">Limpar Tudo</button> <!-- Remove todas as imagens -->
-                    <button class="btn-secondary" onclick="resetarOrdem()">Resetar Ordem</button> <!-- Volta à ordem original -->
+                    <button class="btn-secondary" onclick="limparTudo()" data-translate="clearAllButton">Limpar Tudo</button> <!-- Remove todas as imagens -->
+                    <button class="btn-secondary" onclick="resetarOrdem()" data-translate="resetOrderButton">Resetar Ordem</button> <!-- Volta à ordem original -->
                 </div>
             </section>
 
             <!-- ===== SEÇÃO DE CONFIGURAÇÕES ===== -->
             <!-- Esta seção também só aparece após carregar imagens -->
             <section class="settings-section" id="settingsSection" style="display: none;">
-                <h3>⚙️ Configurações do PDF</h3>
+                <h3 data-translate="settingsTitle">⚙️ Configurações do PDF</h3>
                 
                 <div class="advanced-settings">
                     <!-- ===== CONFIGURAÇÕES DE TEXTO ===== -->
-                    <h4>📝 Configurações de Texto</h4>
+                    <h4 data-translate="textSettingsTitle">📝 Configurações de Texto</h4>
                     <div class="settings-grid">
                         <!-- Campo para título do PDF -->
                         <div class="setting-group">
-                            <label for="titulo">📄 Título do PDF (Primeira Página)</label>
-                            <input type="text" id="titulo" placeholder="Ex: Relatório Mensal" maxlength="100">
-                            <small>Aparecerá como título principal na primeira página</small>
+                            <label for="titulo" data-translate="titleLabel">📄 Título do PDF (Primeira Página)</label>
+                            <input type="text" id="titulo" data-translate="titlePlaceholder" placeholder="Ex: Relatório Mensal" maxlength="100">
+                            <small data-translate="titleHelp">Aparecerá como título principal na primeira página</small>
                         </div>
                         
                         <!-- Campo para autor (aparece no rodapé) -->
                         <div class="setting-group">
-                            <label for="autor">👤 Elaborado por (Rodapé)</label>
-                            <input type="text" id="autor" placeholder="Ex: João Silva" maxlength="50">
-                            <small>Aparecerá no rodapé de todas as páginas</small>
+                            <label for="autor" data-translate="authorLabel">👤 Elaborado por (Rodapé)</label>
+                            <input type="text" id="autor" data-translate="authorPlaceholder" placeholder="Ex: João Silva" maxlength="50">
+                            <small data-translate="authorHelp">Aparecerá no rodapé de todas as páginas</small>
                         </div>
                         
                         <!-- Campo para nome do arquivo de saída -->
                         <div class="setting-group">
-                            <label for="nomeArquivo">📁 Nome do Arquivo de Saída</label>
-                            <input type="text" id="nomeArquivo" placeholder="Ex: relatorio_mensal" maxlength="50">
-                            <small>Nome final do arquivo PDF (sem extensão)</small>
+                            <label for="nomeArquivo" data-translate="filenameLabel">📁 Nome do Arquivo de Saída</label>
+                            <input type="text" id="nomeArquivo" data-translate="filenamePlaceholder" placeholder="Ex: relatorio_mensal" maxlength="50">
+                            <small data-translate="filenameHelp">Nome final do arquivo PDF (sem extensão)</small>
                         </div>
                     </div>
                     
                     <!-- ===== OPÇÕES ADICIONAIS ===== -->
-                    <h4>🎨 Opções Adicionais</h4>
+                    <h4 data-translate="additionalOptionsTitle">🎨 Opções Adicionais</h4>
                     <div class="settings-grid">
                         <!-- Configuração de layout: 1 ou 2 imagens por página -->
                         <div class="setting-group">
-                            <label for="imagensPorPagina">📄 Imagens por Página</label>
+                            <label for="imagensPorPagina" data-translate="imagesPerPageLabel">📄 Imagens por Página</label>
                             <select id="imagensPorPagina">
-                                <option value="1">1 imagem por página</option>
-                                <option value="2">2 imagens por página</option>
+                                <option value="1" data-translate="imagesPerPage1">1 imagem por página</option>
+                                <option value="2" data-translate="imagesPerPage2">2 imagens por página</option>
                             </select>
                         </div>
                         
                         <!-- Opção para incluir numeração de páginas -->
                         <div class="setting-group">
                             <label>
-                                <input type="checkbox" id="numerarPaginas" checked> Numerar Páginas
+                                <input type="checkbox" id="numerarPaginas" checked> <span data-translate="numberPagesLabel">Numerar Páginas</span>
                             </label>
                         </div>
                     </div>
                     
                     <!-- ===== BOTÃO PRINCIPAL PARA GERAR PDF ===== -->
                     <div class="generate-actions">
-                        <button class="btn-primary" onclick="gerarPDF()">📄 Gerar PDF</button>
+                        <button class="btn-primary" onclick="gerarPDF()" data-translate="generateButton">📄 Gerar PDF</button>
                     </div>
                 </div>
             </section>
@@ -148,19 +161,19 @@
             <!-- ===== SEÇÃO DE PROGRESSO ===== -->
             <!-- Aparece durante o processamento e geração do PDF -->
             <section class="progress-section" id="progressSection" style="display: none;">
-                <h3>📊 Processando...</h3>
+                <h3 data-translate="progressTitle">📊 Processando...</h3>
                 <!-- Barra de progresso visual -->
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div> <!-- Preenchimento animado -->
                 </div>
                 <!-- Texto dinâmico do status atual -->
-                <p id="progressText">Preparando imagens...</p>
+                <p id="progressText" data-translate="progressPreparing">Preparando imagens...</p>
             </section>
         </main>
         
         <!-- ===== RODAPÉ ===== -->
         <footer class="footer">
-            <p>Desenvolvido por Hagatha Pereira - 2025 | hagatha.pereira@merckgroup.com</p>
+            <p data-translate="footerText">Desenvolvido por Hagatha Pereira - 2025 | hagatha.pereira@merckgroup.com</p>
         </footer>
     </div>
 
@@ -169,7 +182,7 @@
     <div class="loading-overlay" id="loadingOverlay" style="display: none;">
         <div class="loading-content">
             <div class="spinner"></div> <!-- Animação de carregamento -->
-            <p>Processando suas imagens...</p>
+            <p data-translate="progressProcessing">Processando suas imagens...</p>
         </div>
     </div>
 
@@ -178,14 +191,14 @@
     <div class="modal" id="successModal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>✅ PDF Criado com Sucesso!</h3>
+                <h3 data-translate="successTitle">✅ PDF Criado com Sucesso!</h3>
                 <button class="modal-close" onclick="fecharModal()">&times;</button> <!-- Botão X para fechar -->
             </div>
             <div class="modal-body">
-                <p>Seu PDF foi gerado e o download iniciará automaticamente.</p>
+                <p data-translate="successMessage">Seu PDF foi gerado e o download iniciará automaticamente.</p>
             </div>
             <div class="modal-footer">
-                <button class="btn-primary" onclick="fecharModal()">Fechar</button>
+                <button class="btn-primary" onclick="fecharModal()" data-translate="closeButton">Fechar</button>
             </div>
         </div>
     </div>
@@ -195,7 +208,7 @@
     <div class="modal" id="editModal" style="display: none;">
         <div class="modal-content edit-modal">
             <div class="modal-header">
-                <h3>✏️ Editar Imagem</h3>
+                <h3 data-translate="editTitle">✏️ Editar Imagem</h3>
                 <button class="modal-close" onclick="fecharModalEdicao()">&times;</button>
             </div>
             <div class="modal-body">
@@ -210,29 +223,29 @@
                     <div class="edit-tools">
                         <!-- Grupo de ferramentas para rotação -->
                         <div class="tool-group">
-                            <h4>🔄 Rotação</h4>
+                            <h4 data-translate="rotationTitle">🔄 Rotação</h4>
                             <div class="tool-buttons">
-                                <button class="tool-btn" onclick="girarImagem(-90)">⤺ 90° Esq</button> <!-- Rotação anti-horária -->
-                                <button class="tool-btn" onclick="girarImagem(90)">⤻ 90° Dir</button> <!-- Rotação horária -->
-                                <button class="tool-btn" onclick="girarImagem(180)">↻ 180°</button> <!-- Rotação 180 graus -->
+                                <button class="tool-btn" onclick="girarImagem(-90)" data-translate="rotateLeft">⤺ 90° Esq</button> <!-- Rotação anti-horária -->
+                                <button class="tool-btn" onclick="girarImagem(90)" data-translate="rotateRight">⤻ 90° Dir</button> <!-- Rotação horária -->
+                                <button class="tool-btn" onclick="girarImagem(180)" data-translate="rotate180">↻ 180°</button> <!-- Rotação 180 graus -->
                             </div>
                         </div>
                         
                         <!-- Grupo de ferramentas para corte -->
                         <div class="tool-group">
-                            <h4>✂️ Corte</h4>
+                            <h4 data-translate="cropTitle">✂️ Corte</h4>
                             <div class="tool-buttons">
-                                <button class="tool-btn" onclick="ativarCorte()">✂️ Cortar</button> <!-- Ativa modo de corte -->
-                                <button class="tool-btn" onclick="redefinirCorte()">🔄 Redefinir</button> <!-- Remove seleção de corte -->
+                                <button class="tool-btn" onclick="ativarCorte()" data-translate="cropButton">✂️ Cortar</button> <!-- Ativa modo de corte -->
+                                <button class="tool-btn" onclick="redefinirCorte()" data-translate="cropReset">🔄 Redefinir</button> <!-- Remove seleção de corte -->
                             </div>
-                            <p class="tool-tip">Clique e arraste no canvas para definir área de corte</p>
+                            <p class="tool-tip" data-translate="cropHelp">Clique e arraste no canvas para definir área de corte</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-secondary" onclick="fecharModalEdicao()">Cancelar</button> <!-- Descarta alterações -->
-                <button class="btn-primary" onclick="salvarEdicao()">Salvar</button> <!-- Aplica edições -->
+                <button class="btn-secondary" onclick="fecharModalEdicao()" data-translate="cancelButton">Cancelar</button> <!-- Descarta alterações -->
+                <button class="btn-primary" onclick="salvarEdicao()" data-translate="saveButton">Salvar</button> <!-- Aplica edições -->
             </div>
         </div>
     </div>
