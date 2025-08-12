@@ -361,7 +361,7 @@ function t(key, params = {}) {
 function changeLanguage(lang) {
     if (TRANSLATIONS[lang]) {
         currentLanguage = lang;
-        updateInterface();
+        updateInterfaceTexts();
         localStorage.setItem('hfileeasy_language', lang);
         console.log(`Idioma alterado para: ${lang}`);
     }
@@ -384,6 +384,8 @@ function updateInterfaceTexts() {
         
         if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'email')) {
             element.placeholder = translation;
+        } else if (element.tagName === 'OPTION') {
+            element.textContent = translation;
         } else {
             element.textContent = translation;
         }
@@ -395,13 +397,45 @@ function updateInterfaceTexts() {
     console.log(`Interface atualizada para o idioma: ${currentLanguage}`);
 }
 
+// ===== FUNÇÃO DE DEBUG =====
+function debugTranslationSystem() {
+    console.log('=== DEBUG SISTEMA DE TRADUÇÕES ===');
+    console.log('Idioma atual:', currentLanguage);
+    console.log('Idiomas disponíveis:', Object.keys(TRANSLATIONS));
+    console.log('Total de elementos com data-translate:', document.querySelectorAll('[data-translate]').length);
+    console.log('Seletor de idioma encontrado:', !!document.getElementById('languageSelect'));
+    
+    // Testar algumas traduções
+    console.log('Teste t("title"):', t('title'));
+    console.log('Teste t("subtitle"):', t('subtitle'));
+    console.log('================================');
+}
+
 // ===== INICIALIZAÇÃO =====
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Inicializando sistema de traduções...');
+    
+    // Carregar idioma salvo
     loadSavedLanguage();
-    updateInterfaceTexts();
+    
+    // Aguardar um pouco para garantir que todos os elementos estão carregados
+    setTimeout(() => {
+        updateInterfaceTexts();
+        
+        // Configurar o seletor de idioma
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) {
+            languageSelect.value = currentLanguage;
+            console.log(`Seletor de idioma configurado para: ${currentLanguage}`);
+        }
+        
+        // Debug
+        debugTranslationSystem();
+    }, 100);
 });
 
 // Exportar para uso global
 window.t = t;
 window.changeLanguage = changeLanguage;
 window.updateInterfaceTexts = updateInterfaceTexts;
+window.TRANSLATIONS = TRANSLATIONS;

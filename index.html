@@ -26,10 +26,6 @@
     <!-- ===== BIBLIOTECA JSPDF ===== -->
     <!-- Biblioteca JavaScript para gerar PDFs no navegador -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
-    <!-- ===== SISTEMA DE TRADUÇÕES ===== -->
-    <!-- Sistema de internacionalização para múltiplos idiomas -->
-    <script src="translations.js"></script>
 </head>
 <body>
     <!-- ===== CONTAINER PRINCIPAL ===== -->
@@ -250,8 +246,10 @@
         </div>
     </div>
 
-    <!-- ===== SCRIPT PRINCIPAL ===== -->
-    <!-- Carrega todas as funcionalidades JavaScript da aplicação -->
+    <!-- ===== SCRIPTS ===== -->
+    <!-- Carrega sistema de traduções primeiro -->
+    <script src="translations.js"></script>
+    <!-- Depois carrega as funcionalidades JavaScript da aplicação -->
     <script src="script.js"></script>
 </body>
 </html> 
