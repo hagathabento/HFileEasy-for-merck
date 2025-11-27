@@ -60,6 +60,7 @@
 - **Autor/Elaborador**: Rodapé automático em todas as páginas
 - **Layout flexível**: 1 ou 2 imagens por página
 - **Numeração**: Opcional de páginas
+- **Data no rodapé**: Opção para incluir ou ocultar data no rodapé (configurável)
 - **Nome do arquivo**: Personalização completa com data automática
 
 ### 🔄 Organização
@@ -85,6 +86,8 @@
    - Informe o nome do elaborador
    - Escolha o nome do arquivo de saída
    - Selecione layout (1 ou 2 imagens por página)
+   - Configure se deseja incluir data no rodapé (marcando/desmarcando o checkbox)
+   - Se ativado, selecione a data desejada para aparecer no rodapé
 
 3. **✏️ Edição de Imagens (Opcional)**
    - Clique no ícone "✏️" em qualquer imagem
@@ -106,8 +109,9 @@
 HFileEasy/
 ├── 📄 app.py           # Servidor Flask (apenas arquivos estáticos)
 ├── 🌐 index.html       # Interface principal
-├── 🎨 styles.css       # Estilos responsivos (1387 linhas)
-├── ⚡ script.js        # Lógica principal (1773 linhas)
+├── 🎨 styles.css       # Estilos responsivos (1482 linhas)
+├── ⚡ script.js        # Lógica principal (1891 linhas)
+├── 🌍 translations.js  # Sistema de traduções (PT, EN, DE)
 ├── 🔧 sw.js           # Service Worker (funcionamento offline)
 ├── 🖼️ merck.jpeg      # Logo empresarial
 └── 📚 README.md       # Documentação
@@ -156,6 +160,18 @@ HFileEasy/
 
 ---
 
+
+## 📝 Histórico de Atualizações
+
+### Versão Atual (2025)
+- ✨ **Nova funcionalidade**: Opção para incluir/ocultar data no rodapé do PDF
+  - Checkbox para ativar/desativar a exibição da data
+  - Campo de data configurável quando ativado
+  - Suporte completo em todos os idiomas (PT, EN, DE)
+- 🎨 Melhorias na interface de configurações
+- 🔧 Otimizações de código e performance
+
+---
 
 ## 👥 Suporte e Contato
 
