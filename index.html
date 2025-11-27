@@ -147,6 +147,17 @@
                         </div>
                     </div>
                     
+                    <!-- ===== CAMPO DE DATA ===== -->
+                    <div class="settings-grid date-field-container">
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="incluirData" checked> <span data-translate="includeDateLabel">📅 Incluir Data no Rodapé</span>
+                            </label>
+                            <input type="date" id="dataRodape">
+                            <small data-translate="dateHelp">A data aparecerá no rodapé ao lado da numeração da página</small>
+                        </div>
+                    </div>
+                    
                     <!-- ===== BOTÃO PRINCIPAL PARA GERAR PDF ===== -->
                     <div class="generate-actions">
                         <button class="btn-primary" onclick="gerarPDF()" data-translate="generateButton">📄 Gerar PDF</button>
@@ -169,7 +180,7 @@
         
         <!-- ===== RODAPÉ ===== -->
         <footer class="footer">
-            <p data-translate="footerText">Desenvolvido por Hagatha Pereira - 2025 | hagatha.pereira@merckgroup.com</p>
+            <p data-translate="footerText">Desenvolvido por Hagatha Pereira - 2025 | Responsável técnica - Thuane.ascenção@merckgroup.com</p>
         </footer>
     </div>
 

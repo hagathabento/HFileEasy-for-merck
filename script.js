@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     inicializarEventListeners(); // Configura todos os event listeners
     inicializarSliders(); // Função de compatibilidade
     inicializarSistemaIdiomas(); // Inicializa sistema de idiomas
+    inicializarDataRodape(); // Inicializa campo de data com data atual
 });
 
 // ===== CONFIGURAÇÃO DOS EVENT LISTENERS =====
@@ -31,6 +32,17 @@ function inicializarEventListeners() {
     uploadArea.addEventListener('dragover', handleDragOver); // Arrastar sobre a área
     uploadArea.addEventListener('drop', handleDrop); // Soltar arquivo
     uploadArea.addEventListener('dragleave', handleDragLeave); // Sair da área
+    
+    // Event listener para checkbox de incluir data
+    const incluirDataCheckbox = document.getElementById('incluirData');
+    const dataRodapeInput = document.getElementById('dataRodape');
+    if (incluirDataCheckbox && dataRodapeInput) {
+        incluirDataCheckbox.addEventListener('change', function() {
+            dataRodapeInput.disabled = !incluirDataCheckbox.checked;
+        });
+        // Definir estado inicial
+        dataRodapeInput.disabled = !incluirDataCheckbox.checked;
+    }
 }
 
 // ===== INICIALIZAÇÃO SIMPLIFICADA =====
@@ -54,6 +66,21 @@ function inicializarSistemaIdiomas() {
         }
     }
     console.log('Sistema de idiomas inicializado');
+}
+
+// ===== INICIALIZAÇÃO DO CAMPO DE DATA =====
+function inicializarDataRodape() {
+    const dataRodapeElement = document.getElementById('dataRodape');
+    if (dataRodapeElement) {
+        // Definir data atual como padrão
+        const hoje = new Date();
+        const ano = hoje.getFullYear();
+        const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+        const dia = String(hoje.getDate()).padStart(2, '0');
+        const dataFormatada = `${ano}-${mes}-${dia}`;
+        dataRodapeElement.value = dataFormatada;
+        console.log('Campo de data inicializado com:', dataFormatada);
+    }
 }
 
 // ===== ATUALIZAÇÃO DA INTERFACE APÓS MUDANÇA DE IDIOMA =====
@@ -485,6 +512,7 @@ function confirmarConfiguracoes(config) {
             configImagesPerPage: '📑 Imagens por página: {count}',
             configNumberPages: '✅ Numerar páginas',
             configNoNumberPages: '❌ Numerar páginas',
+            configDateField: '📅 Data:',
             configContinue: 'Deseja continuar?'
         };
         let result = fallbacks[key] || key;
@@ -493,6 +521,11 @@ function confirmarConfiguracoes(config) {
         });
         return result;
     });
+    
+    let mensagemData = '';
+    if (config.dataRodape) {
+        mensagemData = `\n${t('configDateField')} "${config.dataRodape}"`;
+    }
     
     const mensagem = `
 ${t('configTitle')}
@@ -503,7 +536,7 @@ ${t('configFilenameField')} "${nomeArquivo}"
 
 ${t('configImagesField')} ${t('configImagesCount', {count: imagensCarregadas.length})}
 ${t('configImagesPerPage', {count: config.imagensPorPagina})}
-${config.numerarPaginas ? t('configNumberPages') : t('configNoNumberPages')}
+${config.numerarPaginas ? t('configNumberPages') : t('configNoNumberPages')}${mensagemData}
 
 ${t('configContinue')}`;
     
@@ -517,12 +550,25 @@ function obterConfiguracoes() {
     const nomeArquivoElement = document.getElementById('nomeArquivo');
     const numerarPaginasElement = document.getElementById('numerarPaginas');
     const imagensPorPaginaElement = document.getElementById('imagensPorPagina');
+    const dataRodapeElement = document.getElementById('dataRodape');
+    const incluirDataElement = document.getElementById('incluirData');
     
     const titulo = tituloElement ? tituloElement.value.trim() : '';
     const autor = autorElement ? autorElement.value.trim() : '';
     const nomeArquivo = nomeArquivoElement ? nomeArquivoElement.value.trim() : '';
     const numerarPaginas = numerarPaginasElement ? numerarPaginasElement.checked : true;
     const imagensPorPagina = imagensPorPaginaElement ? parseInt(imagensPorPaginaElement.value) : 1;
+    const incluirData = incluirDataElement ? incluirDataElement.checked : false;
+    
+    // Obter data do campo (formato YYYY-MM-DD) e converter para DD/MM/YYYY
+    // Só processa se o checkbox estiver marcado
+    let dataRodape = '';
+    if (incluirData && dataRodapeElement && dataRodapeElement.value) {
+        const dataParts = dataRodapeElement.value.split('-');
+        if (dataParts.length === 3) {
+            dataRodape = `${dataParts[2]}/${dataParts[1]}/${dataParts[0]}`;
+        }
+    }
     
     return {
         // Configurações fixas (valores padrão)
@@ -535,6 +581,7 @@ function obterConfiguracoes() {
         // Configurações do usuário
         numerarPaginas: numerarPaginas,
         imagensPorPagina: imagensPorPagina,
+        dataRodape: dataRodape,
         titulo: titulo || 'Documento PDF',
         autor: autor || 'HFileEasy',
         nomeArquivo: nomeArquivo || 'documento'
@@ -694,10 +741,29 @@ function compilarPDF(imagens, configuracoes) {
                 const autorRodape = `Elaborado por: ${configuracoes.autor}`;
                 doc.text(autorRodape, 20, pageHeight - 10);
                 
+                // Texto do lado direito: numeração e/ou data
+                let textoDireita = '';
+                
                 // Numeração no lado direito (se habilitada)
                 if (configuracoes.numerarPaginas) {
-                    const numeroPagina = `Página ${paginaAtual + 1}`;
-                    doc.text(numeroPagina, pageWidth - 35, pageHeight - 10);
+                    textoDireita = `Página ${paginaAtual + 1}`;
+                }
+                
+                // Adicionar data ao lado da numeração (se fornecida)
+                if (configuracoes.dataRodape) {
+                    if (textoDireita) {
+                        // Se tem numeração, adicionar data ao lado
+                        textoDireita = `${textoDireita} | ${configuracoes.dataRodape}`;
+                    } else {
+                        // Se não tem numeração, apenas a data
+                        textoDireita = configuracoes.dataRodape;
+                    }
+                }
+                
+                // Adicionar texto do lado direito (numeração e/ou data)
+                if (textoDireita) {
+                    const textoWidth = doc.getTextWidth(textoDireita);
+                    doc.text(textoDireita, pageWidth - textoWidth - 20, pageHeight - 10);
                 }
             }
         }

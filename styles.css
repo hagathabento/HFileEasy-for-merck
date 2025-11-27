@@ -260,6 +260,14 @@ body {
     margin-bottom: 30px;
 }
 
+.date-field-container {
+    margin-top: 20px;
+}
+
+.date-field-container .setting-group {
+    grid-column: 1 / -1; /* Ocupa toda a largura do grid */
+}
+
 .setting-group {
     display: flex;
     flex-direction: column;
@@ -292,20 +300,33 @@ body {
 }
 
 .setting-group select,
-.setting-group input[type="text"] {
+.setting-group input[type="text"],
+.setting-group input[type="date"] {
     padding: 12px 15px;
     border: 2px solid #eee;
     border-radius: 10px;
     font-size: 1rem;
     transition: all 0.3s ease;
     background: white;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    cursor: pointer;
 }
 
 .setting-group select:focus,
-.setting-group input[type="text"]:focus {
+.setting-group input[type="text"]:focus,
+.setting-group input[type="date"]:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.setting-group select:hover,
+.setting-group input[type="text"]:hover,
+.setting-group input[type="date"]:hover {
+    border-color: #667eea;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
 }
 
 .setting-group input[type="checkbox"] {
@@ -320,19 +341,53 @@ body {
     gap: 10px;
 }
 
-.setting-group input[type="text"] {
+/* Garantir largura total para inputs de texto e data */
+.setting-group input[type="text"],
+.setting-group input[type="date"] {
     width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    transition: border-color 0.3s ease;
 }
 
-.setting-group input[type="text"]:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+/* Estilos específicos para input de data */
+.setting-group input[type="date"] {
+    position: relative;
+    cursor: pointer;
+}
+
+.setting-group input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #667eea;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.setting-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+    background-color: #764ba2;
+    transform: scale(1.1);
+}
+
+.setting-group input[type="date"]::-webkit-inner-spin-button,
+.setting-group input[type="date"]::-webkit-clear-button {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.setting-group input[type="date"]::-webkit-inner-spin-button:hover,
+.setting-group input[type="date"]::-webkit-clear-button:hover {
+    opacity: 1;
+}
+
+.setting-group input[type="date"]:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.setting-group input[type="date"]:disabled::-webkit-calendar-picker-indicator {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .setting-group small {

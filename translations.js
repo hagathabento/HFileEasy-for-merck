@@ -43,6 +43,9 @@ const TRANSLATIONS = {
         imagesPerPage1: "1 imagem por página",
         imagesPerPage2: "2 imagens por página",
         numberPagesLabel: "Numerar Páginas",
+        dateLabel: "📅 Data para o Rodapé",
+        includeDateLabel: "📅 Incluir Data no Rodapé",
+        dateHelp: "A data aparecerá no rodapé ao lado da numeração da página",
         generateButton: "📄 Gerar PDF",
         
         // ===== PROGRESSO =====
@@ -102,13 +105,14 @@ const TRANSLATIONS = {
         configImagesPerPage: "Imagens por página: {count}",
         configNumberPages: "✅ Numerar páginas",
         configNoNumberPages: "❌ Numerar páginas",
+        configDateField: "📅 Data:",
         configContinue: "Deseja continuar?",
         
         // ===== PROCESSAMENTO =====
         processingImage: "Processando imagem {current} de {total}",
         
         // ===== RODAPÉ =====
-        footerText: "Desenvolvido por Hagatha Pereira - 2025 | hagatha.pereira@merckgroup.com",
+        footerText: "Desenvolvido por Hagatha Pereira - 2025 | Responsável técnica - Thuane.ascenção@merckgroup.com",
         
         // ===== ERROS DEPENDÊNCIAS =====
         jsPDFError: "Erro: Biblioteca jsPDF não carregada. Verifique sua conexão com a internet.",
@@ -154,6 +158,9 @@ const TRANSLATIONS = {
         imagesPerPage1: "1 image per page",
         imagesPerPage2: "2 images per page",
         numberPagesLabel: "Number Pages",
+        dateLabel: "📅 Date for Footer",
+        includeDateLabel: "📅 Include Date in Footer",
+        dateHelp: "The date will appear in the footer next to the page number",
         generateButton: "📄 Generate PDF",
         
         // ===== PROGRESS =====
@@ -213,13 +220,14 @@ const TRANSLATIONS = {
         configImagesPerPage: "Images per page: {count}",
         configNumberPages: "✅ Number pages",
         configNoNumberPages: "❌ Number pages",
+        configDateField: "📅 Date:",
         configContinue: "Do you want to continue?",
         
         // ===== PROCESSING =====
         processingImage: "Processing image {current} of {total}",
         
         // ===== FOOTER =====
-        footerText: "Developed by Hagatha Pereira - 2025 | hagatha.pereira@merckgroup.com",
+        footerText: "Developed by Hagatha Pereira - 2025 | Technical Responsible - Thuane.ascenção@merckgroup.com",
         
         // ===== DEPENDENCY ERRORS =====
         jsPDFError: "Error: jsPDF library not loaded. Check your internet connection.",
@@ -265,6 +273,9 @@ const TRANSLATIONS = {
         imagesPerPage1: "1 Bild pro Seite",
         imagesPerPage2: "2 Bilder pro Seite",
         numberPagesLabel: "Seiten Nummerieren",
+        dateLabel: "📅 Datum für Fußzeile",
+        includeDateLabel: "📅 Datum in Fußzeile einbeziehen",
+        dateHelp: "Das Datum erscheint in der Fußzeile neben der Seitennummer",
         generateButton: "📄 PDF Erstellen",
         
         // ===== FORTSCHRITT =====
@@ -324,13 +335,14 @@ const TRANSLATIONS = {
         configImagesPerPage: "Bilder pro Seite: {count}",
         configNumberPages: "✅ Seiten nummerieren",
         configNoNumberPages: "❌ Seiten nummerieren",
+        configDateField: "📅 Datum:",
         configContinue: "Möchten Sie fortfahren?",
         
         // ===== VERARBEITUNG =====
         processingImage: "Verarbeite Bild {current} von {total}",
         
         // ===== FUSSZEILE =====
-        footerText: "Entwickelt von Hagatha Pereira - 2025 | hagatha.pereira@merckgroup.com",
+        footerText: "Entwickelt von Hagatha Pereira - 2025 | Technische Verantwortliche - Thuane.ascenção@merckgroup.com",
         
         // ===== ABHÄNGIGKEITSFEHLER =====
         jsPDFError: "Fehler: jsPDF-Bibliothek nicht geladen. Überprüfen Sie Ihre Internetverbindung.",
